@@ -12,7 +12,7 @@ const ClientBox = ({ username }) => {
       />
       <h2 className="text-md font-josefin text-white ">{`${
         username.split(" ")[0]
-      } ${username.split(" ")[1].charAt(0)}`}</h2>
+      } ${username.split(" ")[1]?.charAt(0) || ""}`}</h2>
     </div>
   );
 };

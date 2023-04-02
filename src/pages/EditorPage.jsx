@@ -13,6 +13,7 @@ const EditorPage = () => {
   const reactNavigator = useNavigate();
   const { id } = useParams();
   const socketRef = useRef(null);
+  const [clients, setClients] = useState([]);
 
   useEffect(() => {
     const initialize = async () => {
@@ -32,14 +33,45 @@ const EditorPage = () => {
         id,
         userName: location.state?.userName,
       });
+
+      // listening for joined socket event
+      socketRef?.current.on(
+        Actions.JOINED,
+        ({ allClients, userName, userSocketId }) => {
+          // checking for current userName
+          console.log(allClients);
+
+          if (userName !== location.state?.userName) {
+            toast.success(`Welcome ${userName} to the room`);
+          }
+          setClients(allClients);
+        }
+      );
+
+      //listening for disconnection
+      socketRef?.current.on(Actions.DISCONNECTED, ({ userName, socketId }) => {
+        // checking for current userName
+        toast(`${userName} left the room`, {
+          icon: "😢",
+        });
+        setClients(
+          (prev) => {
+            return prev.filter((client) => client.userSocketId !== socketId);
+          },
+          () => [console.log(clients)]
+        );
+      });
     };
 
     initialize();
+
+    return () => {
+      socketRef.current.disconnect();
+      // socket io event unsubscribe
+      socketRef.current.off(Actions.JOINED);
+      socketRef.current.off(Actions.DISCONNECTED);
+    };
   }, []);
-  const [clients, setClients] = useState([
-    { socketId: 1, userName: "Priyansh Shrivastava" },
-    { socketId: 2, userName: "Aditya Gupta" },
-  ]);
 
   if (!location.state) {
     return <Navigate to="/" />;

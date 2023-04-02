@@ -8,7 +8,7 @@ const EditorAside = ({ clients }) => {
     setShowParticipant((prev) => !prev);
   };
   return (
-    <div className="flex flex-row md:flex-col justify-between bg-slate-800 w-full h-16 md:w-60 md:h-screen transition-all duration-100 md:px-4 md:py-2 px-4 items-center relative">
+    <div className="flex flex-row md:flex-col justify-between bg-slate-800 w-full h-16 md:w-60 md:h-screen transition-all duration-100 md:px-4 md:py-2 px-4 py-4 items-center relative">
       <div className="flex flex-row space-x-6 md:space-x-0 md:flex-col md:space-y-6 items-center">
         <div>
           <div className="w-full flex justify-start space-x-2 items-center ">
@@ -29,10 +29,10 @@ const EditorAside = ({ clients }) => {
           </h3>
           <div
             id="user-connected"
-            className="hidden md:flex gap-8 flex-wrap  items-start "
+            className="hidden md:flex gap-8 flex-wrap items-start  flex-grow h-full"
           >
-            {clients.map((client) => (
-              <ClientBox key={client.socketId} username={client.userName} />
+            {clients.map((client, index) => (
+              <ClientBox key={index} username={client.userName} />
             ))}
           </div>
         </div>
@@ -54,9 +54,9 @@ const EditorAside = ({ clients }) => {
           onClick={handleShowParticipants}
         ></i>
         {showParticipant && (
-          <div className="bg-slate-500 px-4 w-60 rounded-md py-6 absolute top-12 right-1 overflow-y-scroll flex gap-6 flex-wrap z-30 ">
-            {clients.map((client) => (
-              <ClientBox key={client.socketId} username={client.userName} />
+          <div className="bg-slate-500 px-4 w-60 rounded-md py-6 absolute top-12 right-1 overflow-y-scroll flex gap-6 flex-wrap z-30 h-60 ">
+            {clients.map((client, index) => (
+              <ClientBox key={index} username={client.userName} />
             ))}
           </div>
         )}

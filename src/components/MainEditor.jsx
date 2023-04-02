@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Codemirror from "codemirror";
 import "codemirror/lib/codemirror.css";
 import "codemirror/theme/ayu-mirage.css";
@@ -7,16 +7,26 @@ import "codemirror/addon/edit/closetag";
 import "codemirror/addon/edit/closebrackets";
 
 const MainEditor = () => {
+  const editorRef = useRef(null);
   // initializing code editor
 
   async function init() {
-    Codemirror.fromTextArea(document.getElementById("realEditor"), {
-      //   Additional options
-      mode: { name: "javascript", json: true },
-      theme: "ayu-mirage",
-      autoCloseTags: true,
-      autoCloseBrackets: true,
-      lineNumbers: true,
+    editorRef.current = Codemirror.fromTextArea(
+      document.getElementById("realEditor"),
+      {
+        //   Additional options
+        mode: { name: "javascript", json: true },
+        theme: "ayu-mirage",
+        autoCloseTags: true,
+        autoCloseBrackets: true,
+        lineNumbers: true,
+      }
+    );
+    editorRef.current.on("change", (instance, changes) => {
+      const { origin } = changes;
+      const text = instance.getValue();
+
+      // checking for already set values
     });
 
     console.log("hello");
