@@ -7,7 +7,8 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "start": "node server.js"
+    "start": "npm run build && npm run start:prod",
+    "start:prod": "node server.js"
   },
   "dependencies": {
     "codemirror": "^5.65.2",

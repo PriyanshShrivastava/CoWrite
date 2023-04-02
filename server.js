@@ -3,10 +3,19 @@ const app = express();
 import http from "http";
 import { Server } from "socket.io";
 import Actions from "./src/EventActions.js";
+import { fileURLToPath } from "url";
+import path from "path";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const server = http.createServer(app);
-
 const io = new Server(server);
+
+app.use(express.static("dist"));
+app.use((req, res, next) => {
+  res.sendFile(path.join(__dirname, "dist", "index.html"));
+});
 
 // Socket mapping
 const socketMap = {};
