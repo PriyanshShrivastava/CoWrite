@@ -29,6 +29,12 @@ const RoomForm = () => {
     });
   };
 
+  const handleEnter = (event) => {
+    if (event.code == "Enter") {
+      handleJoin();
+    }
+  };
+
   return (
     <div className="px-8 py-4 rounded-md flex flex-col space-y-4 bg-slate-600 text-white w-10/12 md:1/2 lg:w-1/3  transition-all duration-200">
       <div
@@ -52,6 +58,7 @@ const RoomForm = () => {
             const value = event.target.value;
             setRoomId(value);
           }}
+          onKeyDown={handleEnter}
         />
         <input
           type="text"
@@ -63,6 +70,7 @@ const RoomForm = () => {
             const value = event.target.value;
             setUserName(value);
           }}
+          onKeyDown={handleEnter}
         />
       </div>
       <div className="w-full text-right">
