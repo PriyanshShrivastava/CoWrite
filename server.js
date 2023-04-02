@@ -77,4 +77,8 @@ const PORT = process.env.PORT || 8080;
 
 server.listen(PORT, (err, res) => {
   console.log(`Listening on ${PORT}`);
+
+  if (err) {
+    console.log(err);
+  }
 });
