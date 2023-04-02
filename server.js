@@ -31,6 +31,8 @@ io.on("connection", (socket) => {
     socket.join(id);
 
     const allClients = getAllClients(id);
+
+    // getting all clients detail
     allClients.forEach(({ userSocketId }) => {
       // message emit to every participant
       io.to(userSocketId).emit(Actions.JOINED, {
@@ -39,6 +41,24 @@ io.on("connection", (socket) => {
         userSocketId: socket.id,
       });
     });
+  });
+
+  // event just before disconnecting (run when: browser close , different page)
+  socket.on("disconnecting", () => {
+    const rooms = [...socket.rooms];
+
+    rooms.forEach((id) => {
+      // emit an event inside the room
+      socket.in(id).emit(Actions.DISCONNECTED, {
+        socketId: socket.id,
+        userName: socketMap[socket.id],
+      });
+    });
+
+    delete socketMap[socket.id];
+
+    // leaving a room
+    socket.leave();
   });
 });
 
