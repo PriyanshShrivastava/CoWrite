@@ -54,7 +54,7 @@ const EditorAside = ({ clients }) => {
           onClick={handleShowParticipants}
         ></i>
         {showParticipant && (
-          <div className="bg-slate-500 px-4 w-60 rounded-md py-6 absolute top-12 right-1 overflow-y-scroll flex gap-6 flex-wrap ">
+          <div className="bg-slate-500 px-4 w-60 rounded-md py-6 absolute top-12 right-1 overflow-y-scroll flex gap-6 flex-wrap z-30 ">
             {clients.map((client) => (
               <ClientBox key={client.socketId} username={client.userName} />
             ))}
