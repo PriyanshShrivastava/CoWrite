@@ -1,11 +1,27 @@
 import React, { useState } from "react";
 import ClientBox from "./ClientBox";
+import { toast } from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
-const EditorAside = ({ clients }) => {
+const EditorAside = ({ clients, id }) => {
   const [showParticipant, setShowParticipant] = useState(false);
+  const navigate = useNavigate();
 
   const handleShowParticipants = () => {
     setShowParticipant((prev) => !prev);
+  };
+
+  const handleCopy = async () => {
+    try {
+      await navigator.clipboard.writeText(id);
+      toast.success(`Room ID copied`);
+    } catch (error) {
+      toast.error(`Can't copy`);
+    }
+  };
+
+  const leaveRoom = () => {
+    navigate("/");
   };
   return (
     <div className="flex flex-row md:flex-col justify-between bg-slate-800 w-full h-16 md:w-60 md:h-screen transition-all duration-100 md:px-4 md:py-2 px-4 py-4 items-center relative">
@@ -38,17 +54,22 @@ const EditorAside = ({ clients }) => {
         </div>
       </div>
       <div className="flex flex-row space-x-4 md:flex-col md:space-y-6 md:space-x-0 md:w-full relative">
-        <button className="bg-slate-300 font-josefin text-sm md:text-md rounded-md shadow-md px-2 md:py-2">
+        <button
+          className="bg-slate-300 font-josefin text-sm md:text-md rounded-md shadow-md px-2 md:py-2"
+          onClick={handleCopy}
+        >
           {" "}
           <i className="fa-regular fa-clipboard"></i> Room ID
         </button>
-        <button className="bg-red-400 font-josefin text-sm md:text-md rounded-md shadow-md px-2 md:py-2 ">
+        <button
+          className="bg-red-400 font-josefin text-sm md:text-md rounded-md shadow-md px-2 md:py-2 "
+          onClick={leaveRoom}
+        >
           {" "}
           Leave
         </button>
 
         {/* Mobile navigation  */}
-
         <i
           className="fa-solid fa-bars text-2xl text-white md:hidden"
           onClick={handleShowParticipants}
