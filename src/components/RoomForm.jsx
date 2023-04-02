@@ -43,7 +43,7 @@ const RoomForm = () => {
       >
         <i className="fa-solid fa-dna text-3xl text-green-300"></i>
         <h1 className="text-4xl font-semibold text-white font-josefin mt-2">
-          Code Along
+          CoWrite
         </h1>
       </div>
       <p>Paste room id below:</p>
