@@ -28,7 +28,11 @@ const MainEditor = () => {
 
     intitialize();
   }, []);
-  return <textarea className="w-full h-full" id="realEditor"></textarea>;
+  return (
+    <>
+      <textarea className="w-full h-full" id="realEditor"></textarea>;
+    </>
+  );
 };
 
 export default MainEditor;
