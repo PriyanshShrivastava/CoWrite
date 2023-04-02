@@ -23,8 +23,6 @@ const getAllClients = (id) => {
 };
 
 io.on("connection", (socket) => {
-  // console.log("Socket Connected", socket.id);
-
   socket.on(Actions.JOIN, ({ id, userName }) => {
     socketMap[socket.id] = userName;
     // making socket join the room
@@ -41,6 +39,19 @@ io.on("connection", (socket) => {
         userSocketId: socket.id,
       });
     });
+  });
+
+  socket.on(Actions.CODE_CHANGE, ({ id, text }) => {
+    // server event emit
+    // send code to every client other then me
+    socket.in(id).emit(Actions.CODE_CHANGE, { text });
+  });
+
+  // listening to sync text
+  socket.on(Actions.SYNC_CODE, ({ userSocketId, text }) => {
+    // server event emit
+    // send code to every client other then me
+    io.to(userSocketId).emit(Actions.CODE_CHANGE, { text });
   });
 
   // event just before disconnecting (run when: browser close , different page)

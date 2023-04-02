@@ -14,6 +14,7 @@ const EditorPage = () => {
   const { id } = useParams();
   const socketRef = useRef(null);
   const [clients, setClients] = useState([]);
+  const syncCodeRef = useRef(null);
 
   useEffect(() => {
     const initialize = async () => {
@@ -39,12 +40,14 @@ const EditorPage = () => {
         Actions.JOINED,
         ({ allClients, userName, userSocketId }) => {
           // checking for current userName
-          console.log(allClients);
-
           if (userName !== location.state?.userName) {
             toast.success(`Welcome ${userName} to the room`);
           }
           setClients(allClients);
+          socketRef.current.emit(Actions.SYNC_CODE, {
+            text: syncCodeRef.current,
+            userSocketId,
+          });
         }
       );
 
@@ -54,12 +57,9 @@ const EditorPage = () => {
         toast(`${userName} left the room`, {
           icon: "😢",
         });
-        setClients(
-          (prev) => {
-            return prev.filter((client) => client.userSocketId !== socketId);
-          },
-          () => [console.log(clients)]
-        );
+        setClients((prev) => {
+          return prev.filter((client) => client.userSocketId !== socketId);
+        });
       });
     };
 
@@ -73,13 +73,18 @@ const EditorPage = () => {
     };
   }, []);
 
+  // handling sync event
+  const handletextChange = (text) => {
+    syncCodeRef.current = text;
+  };
+
   if (!location.state) {
     return <Navigate to="/" />;
   }
   return (
     <div className="flex flex-col md:flex-row h-screen w-full relative">
-      <EditorAside clients={clients} />
-      <MainEditor />
+      <EditorAside clients={clients} id={id} />
+      <MainEditor socketRef={socketRef} id={id} textChange={handletextChange} />
     </div>
   );
 };

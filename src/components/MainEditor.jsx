@@ -5,8 +5,9 @@ import "codemirror/theme/ayu-mirage.css";
 import "codemirror/mode/javascript/javascript";
 import "codemirror/addon/edit/closetag";
 import "codemirror/addon/edit/closebrackets";
+import Actions from "../EventActions";
 
-const MainEditor = () => {
+const MainEditor = ({ socketRef, id, textChange }) => {
   const editorRef = useRef(null);
   // initializing code editor
 
@@ -26,11 +27,32 @@ const MainEditor = () => {
       const { origin } = changes;
       const text = instance.getValue();
 
-      // checking for already set values
-    });
+      textChange(text);
 
-    console.log("hello");
+      // checking for already set values
+      if (origin !== "setValue") {
+        socketRef.current.emit(Actions.CODE_CHANGE, {
+          id,
+          text,
+        });
+      }
+    });
   }
+
+  useEffect(() => {
+    if (socketRef.current) {
+      socketRef.current.on(Actions.CODE_CHANGE, ({ text }) => {
+        if (text !== null) {
+          editorRef.current.setValue(text);
+        }
+      });
+    }
+
+    return () => {
+      socketRef.current.off(Actions.CODE_CHANGE);
+    };
+  }, [socketRef.current]);
+
   useEffect(() => {
     async function intitialize() {
       await init();
@@ -38,6 +60,7 @@ const MainEditor = () => {
 
     intitialize();
   }, []);
+
   return (
     <>
       <textarea className="w-full h-full" id="realEditor"></textarea>;
