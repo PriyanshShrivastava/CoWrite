@@ -7,7 +7,7 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "start": "npm run build && npm run start:prod",
+    "start": "npm install @babel/runtime && npm run build && npm run",
     "start:prod": "node server.js"
   },
   "dependencies": {
