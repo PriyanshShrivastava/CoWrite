@@ -44,6 +44,7 @@ Technology and Packages used:
 **Backend:**
 - Node.js - Js runtime
 - Express - A node js frame work to make writing js in node easy.
+- Socket.io - Bidirectional and low-latency communication for every platform
 
 
 **Hosting:**
