@@ -53,7 +53,7 @@ Technology and Packages used:
 
 ## Installation
 
-Install Sky Watch with npm
+Install CoWrite with npm
 
 ```bash
   git clone 'git remote add origin https://github.com/PriyanshShrivastava/CoWrite.git'
